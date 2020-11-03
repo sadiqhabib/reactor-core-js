@@ -129,9 +129,7 @@ export class FluxSkipSubscriber<T> implements Subscriber<T>, Subscription {
     if (r != 0) {
       r--;
       this._remaining = r;
-      if (r != 0) {
-        return;
-      }
+      return; // if (r != 0) { return; }
     }
     this._actual.onNext(t);
   }
@@ -323,7 +321,7 @@ export class SkipLastSubscriber<T> implements Subscriber<T>, Subscription {
     if (q.isFull()) {
       const v = q.poll();
       if (v != null) {
-        this.onNext(v);
+        this._actual.onNext(v);
       }
     }
     q.offer(t);

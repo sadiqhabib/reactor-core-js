@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       https://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -165,7 +165,6 @@ export class SpscLinkedArrayQueue<T> implements Queue<T> {
     while (this.poll() != null) {}
   }
 }
-
 /** A fixed size buffer that overwrites old entries. */
 export class RingBuffer<T> {
   array: Array<?T>;
@@ -181,14 +180,8 @@ export class RingBuffer<T> {
     const a = this.array;
 
     let pi = this.producerIndex;
-    a[pi++] = t;
-
-    if (pi == a.length) {
-      this.producerIndex = 0;
-    } else {
-      this.producerIndex = pi;
-    }
     let ci = this.consumerIndex;
+
     if (pi == ci) {
       ci++;
       if (ci == a.length) {
@@ -196,6 +189,13 @@ export class RingBuffer<T> {
       } else {
         this.consumerIndex = ci;
       }
+    }
+
+    a[pi++] = t;
+    if (pi == a.length) {
+      this.producerIndex = 0;
+    } else {
+      this.producerIndex = pi;
     }
   }
 
